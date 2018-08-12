@@ -1,0 +1,25 @@
+---
+# $ ansible-playbook tests/test_play.yml -i tests/test_inv.yml -b
+
+- hosts: 'vagrant'
+  roles:
+    - role: "queued-orthanc"
+      qorth_service: "testing1"
+
+    - role: "queued-orthanc"
+      qorth_service: "testing2"
+
+      quorth_queue:
+        qorth_ports:
+          dicom:       42010
+          api:         42011
+
+      qorth_destination:
+        qorth_ports:
+          dicom:       42012
+          api:         42013
+
+
+
+
+

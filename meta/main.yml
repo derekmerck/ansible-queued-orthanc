@@ -1,0 +1,15 @@
+galaxy_info:
+  author: Derek Merck
+  description: Configure and run a queued orthanc arrangement where the primary archive is fed by an anonymization and compression queue.
+
+  role_name: queued-orthanc
+
+  license: MIT
+
+  min_ansible_version: 2.4
+
+  galaxy_tags:
+  - docker
+  - dicom
+
+dependencies: []

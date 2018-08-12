@@ -1,0 +1,41 @@
+---
+# defaults file for queued-orthanc
+data_dir: "/data"
+config_dir: "/config"
+
+qorth_base_name:              "dicom"
+
+qorth_queue:
+  orthanc_docker_image:       "jodogne/orthanc"
+  orthanc_docker_tag:         "latest"
+  orthanc_pg_backend:         False
+  orthanc_container_name:     "{{ qorth_base_name }}-queue"
+  orthanc_title:              "{{ qorth_base_name | capitalize }} Queue"
+  orthanc_user:               "orthanc"
+  orthanc_password:           "passw0rd!"
+  orthanc_use_data_container: True
+  orthanc_volumes:
+    data:                     "{{ data_dir }}/{{ qorth_base_name }}-queue"
+    config:                   "{{ config_dir }}/{{ qorth_base_name }}-queue"
+  orthanc_ports:
+    dicom:                    "42000"
+    api:                      "42001"
+  orthanc_anonymize:          False
+  orthanc_compress:           False
+
+qorth_destination:
+  orthanc_docker_image:       "jodogne/orthanc-plugins"
+  orthanc_docker_tag:         "latest"
+  orthanc_pg_backend:         True
+  orthanc_container_name:     "{{ qorth_base_name }}-archive"
+  orthanc_title:              "{{ qorth_base_name | capitalize }} Archive"
+  orthanc_user:               "orthanc"
+  orthanc_password:           "passw0rd!"
+  orthanc_use_data_container: False
+  orthanc_volumes:
+    data:                     "{{ data_dir }}/{{ qorth_base_name }}-archive"
+    config:                   "{{ config_dir }}/{{ qorth_base_name }}-archive"
+  orthanc_ports:
+    dicom:                    "42002"
+    api:                      "42003"
+
