@@ -63,8 +63,6 @@ qorth_queue:
 New queue-specific routing configuration vars:
 ```yaml
 qorth_queue:
-  orthanc_anonymize:       False
-  orthanc_compress:        False
   diana_routing_dir:       None
   ftpd_incoming_dir:       None
 ```
