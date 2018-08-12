@@ -30,6 +30,10 @@
 #  become: yes
   when: (diana_routing_dir is defined) and diana_routing_dir and (qorth_queue.ftpd_incoming_dir is defined) and (qorth_queue.ftpd_incoming_dir != None)
 
+#############################
+# Copy routing config if needed
+#############################
+
 - name: 'Add {{ qorth_queue.diana_routing_dir }}/{{ qorth_queue.orthanc_container_name }}.py'
   template:
     src: routing.py.j2
@@ -79,17 +83,15 @@
     orthanc_dicom_port:         "{{ qorth_queue.orthanc_ports.dicom }}"
     orthanc_api_port:           "{{ qorth_queue.orthanc_ports.api }}"
 
-
     orthanc_peers:  >
           { 'destination': ['http://{{ dockerhost_ip }}:{{ qorth_destination.orthanc_ports.api }}',
                             'orthanc',
                             '{{ qorth_destination.orthanc_password }}'] }
+
+    # TODO: Delete destinations if using a DIANA-Watcher
     orthanc_destinations: >
           {{ [{ 'dest': 'destination',
-             'type': 'peer' }] }}
+                'type': 'peer' }] }}
 
     orthanc_anonymize:          "{{ qorth_queue.orthanc_anonymize }}"
     orthanc_compress:           "{{ qorth_queue.orthanc_compress }}"
-
-  # include these vars when not qorth_queue.diana_routing_dir
-  # ortherwise, copy the routing table and add a watcher role as well

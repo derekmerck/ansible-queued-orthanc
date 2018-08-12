@@ -61,11 +61,14 @@ qorth_queue:
 ```
 
 New queue-specific routing configuration vars:
+
 ```yaml
 qorth_queue:
   diana_routing_dir:       None
   ftpd_incoming_dir:       None
 ```
+
+Setting `diana_routing_dir` will add a DIANA dependency and create a baseline routing table to forward imaging between the queue and destination nodes.  If `ftpd_incoming_dir` is also set, a route from incoming to the orthanc queue will also be created.
 
 Example Playbook
 ----------------
@@ -107,8 +110,7 @@ If using forwarding with compression, use the `derekmerck/orthanc` docker image,
             orthanc_compress:  True
 ```
 
-
-Setting `diana_routing_dir` will add a DIANA dependency and create a baseline routing table to forward imaging between the queue and destination nodes.  If `ftpd_incoming_dir` is also set, a route from incoming to the orthanc queue will also be created.
+Forwarding with a DIANA-Watcher routing table.
 
 ```yaml
         ...
