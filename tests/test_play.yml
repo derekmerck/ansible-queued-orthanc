@@ -10,12 +10,12 @@
       qorth_service: "testing2"
 
       quorth_queue:
-        qorth_ports:
+        orthanc_ports:
           dicom:       42010
           api:         42011
 
       qorth_destination:
-        qorth_ports:
+        orthanc_ports:
           dicom:       42012
           api:         42013
 
