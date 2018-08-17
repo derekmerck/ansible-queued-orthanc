@@ -1,6 +1,29 @@
 ---
 # tasks file for queued-orthanc
 
+- debug:
+    msg: "{{ qorth_queue_ }}"
+
+- debug:
+    msg: "{{ qorth_destination_ }}"
+
+- debug:
+    msg: "{{ qorth_queue }}"
+
+- debug:
+    msg: "{{ qorth_destination }}"
+
+- set_fact:
+    qorth_queue__:       "{{ qorth_queue_       | combine( qorth_queue | default({}) ) }}"
+    qorth_destination__: "{{ qorth_destination_ | combine( qorth_destination | default({}) ) }}"
+
+- debug:
+    msg: "{{ qorth_queue__ }}"
+
+- debug:
+    msg: "{{ qorth_destination__ }}"
+
+
 #############################
 # Setup dockerhost
 #############################
@@ -16,29 +39,29 @@
 # Create required directories
 #############################
 
-- name: "Create {{ qorth_queue.diana_routing_dir }} directory for routing"
+- name: "Create {{ qorth_queue__.diana_routing_dir }} directory for routing"
   file:
-    path: '{{ qorth_queue.diana_routing_dir }}'
+    path: '{{ qorth_queue__.diana_routing_dir }}'
     state: directory
 #  become: yes
-  when: (qorth_queue.diana_routing_dir is defined) and (qorth_queue.diana_routing_dir != None)
+  when: (qorth_queue__.diana_routing_dir is defined) and (qorth_queue__.diana_routing_dir != None)
 
 - name: "Create {{ qorth_queue.ftpd_incoming_dir }} directory for routing"
   file:
     path: '{{ qorth_queue.ftpd_incoming_dir }}'
     state: directory
 #  become: yes
-  when: (diana_routing_dir is defined) and diana_routing_dir and (qorth_queue.ftpd_incoming_dir is defined) and (qorth_queue.ftpd_incoming_dir != None)
+  when: (qorth_queue__.diana_routing_dir is defined) and qorth_queue__.diana_routing_dir and (qorth_queue.ftpd_incoming_dir is defined) and (qorth_queue.ftpd_incoming_dir != None)
 
 #############################
 # Copy routing config if needed
 #############################
 
-- name: 'Add {{ qorth_queue.diana_routing_dir }}/{{ qorth_queue.orthanc_container_name }}.py'
+- name: 'Add {{ qorth_queue__.diana_routing_dir }}/{{ qorth_queue__.orthanc_container_name }}.py'
   template:
     src: routing.py.j2
-    dest: "{{ diana_routing_dir }}/{{ qorth_queue.orthanc_container_name }}.py }}"
-  when: (qorth_queue.diana_routing_dir is defined) and (qorth_queue.diana_routing_dir != None)
+    dest: "{{ qorth_queue__.diana_routing_dir }}/{{ qorth_queue__.orthanc_container_name }}.py }}"
+  when: (qorth_queue__.diana_routing_dir is defined) and (qorth_queue__.diana_routing_dir != None)
   notify: restart_orthanc_container
 
 #############################
@@ -49,18 +72,18 @@
   include_role:
     name: orthanc-docker
   vars:
-    orthanc_docker_image:       "{{ qorth_destination.orthanc_docker_image }}"
-    orthanc_docker_tag:         "{{ qorth_destination.orthanc_docker_tag }}"
-    orthanc_pg_backend:         "{{ qorth_destination.orthanc_pg_backend }}"
-    orthanc_container_name:     "{{ qorth_destination.orthanc_container_name }}"
-    orthanc_title:              "{{ qorth_destination.orthanc_title }}"
-    orthanc_user:               "{{ qorth_destination.orthanc_user }}"
-    orthanc_password:           "{{ qorth_destination.orthanc_password }}"
-    orthanc_use_data_container: "{{ qorth_destination.orthanc_use_data_container }}"
-    orthanc_data_dir:           "{{ qorth_destination.orthanc_volumes.data }}"
-    orthanc_config_dir:         "{{ qorth_destination.orthanc_volumes.config }}"
-    orthanc_dicom_port:         "{{ qorth_destination.orthanc_ports.dicom }}"
-    orthanc_api_port:           "{{ qorth_destination.orthanc_ports.api }}"
+    orthanc_docker_image:       "{{ qorth_destination__.orthanc_docker_image }}"
+    orthanc_docker_tag:         "{{ qorth_destination__.orthanc_docker_tag }}"
+    orthanc_pg_backend:         "{{ qorth_destination__.orthanc_pg_backend }}"
+    orthanc_container_name:     "{{ qorth_destination__.orthanc_container_name }}"
+    orthanc_title:              "{{ qorth_destination__.orthanc_title }}"
+    orthanc_user:               "{{ qorth_destination__.orthanc_user }}"
+    orthanc_password:           "{{ qorth_destination__.orthanc_password }}"
+    orthanc_use_data_container: "{{ qorth_destination__.orthanc_use_data_container }}"
+    orthanc_data_dir:           "{{ qorth_destination__.orthanc_volumes.data }}"
+    orthanc_config_dir:         "{{ qorth_destination__.orthanc_volumes.config }}"
+    orthanc_dicom_port:         "{{ qorth_destination__.orthanc_ports.dicom }}"
+    orthanc_api_port:           "{{ qorth_destination__.orthanc_ports.api }}"
 
 #############################
 # Create queue node
@@ -70,28 +93,28 @@
   include_role:
     name: orthanc-docker
   vars:
-    orthanc_docker_image:       "{{ qorth_queue.orthanc_docker_image }}"
-    orthanc_docker_tag:         "{{ qorth_queue.orthanc_docker_tag }}"
-    orthanc_pg_backend:         "{{ qorth_queue.orthanc_pg_backend }}"
-    orthanc_container_name:     "{{ qorth_queue.orthanc_container_name }}"
-    orthanc_title:              "{{ qorth_queue.orthanc_title }}"
-    orthanc_user:               "{{ qorth_destination.orthanc_user }}"
-    orthanc_password:           "{{ qorth_destination.orthanc_password }}"
-    orthanc_use_data_container: "{{ qorth_queue.orthanc_use_data_container }}"
-    orthanc_data_dir:           "{{ qorth_queue.orthanc_volumes.data }}"
-    orthanc_config_dir:         "{{ qorth_queue.orthanc_volumes.config }}"
-    orthanc_dicom_port:         "{{ qorth_queue.orthanc_ports.dicom }}"
-    orthanc_api_port:           "{{ qorth_queue.orthanc_ports.api }}"
+    orthanc_docker_image:       "{{ qorth_queue__.orthanc_docker_image }}"
+    orthanc_docker_tag:         "{{ qorth_queue__.orthanc_docker_tag }}"
+    orthanc_pg_backend:         "{{ qorth_queue__.orthanc_pg_backend }}"
+    orthanc_container_name:     "{{ qorth_queue__.orthanc_container_name }}"
+    orthanc_title:              "{{ qorth_queue__.orthanc_title }}"
+    orthanc_user:               "{{ qorth_destination__.orthanc_user }}"
+    orthanc_password:           "{{ qorth_destination__.orthanc_password }}"
+    orthanc_use_data_container: "{{ qorth_queue__.orthanc_use_data_container }}"
+    orthanc_data_dir:           "{{ qorth_queue__.orthanc_volumes.data }}"
+    orthanc_config_dir:         "{{ qorth_queue__.orthanc_volumes.config }}"
+    orthanc_dicom_port:         "{{ qorth_queue__.orthanc_ports.dicom }}"
+    orthanc_api_port:           "{{ qorth_queue__.orthanc_ports.api }}"
 
     orthanc_peers:  >
-          { 'destination': ['http://{{ dockerhost_ip }}:{{ qorth_destination.orthanc_ports.api }}',
+          { 'destination': ['http://{{ dockerhost_ip }}:{{ qorth_destination__.orthanc_ports.api }}',
                             'orthanc',
-                            '{{ qorth_destination.orthanc_password }}'] }
+                            '{{ qorth_destination__.orthanc_password }}'] }
 
     # TODO: Delete destinations if using a DIANA-Watcher
     orthanc_destinations: >
           {{ [{ 'dest': 'destination',
                 'type': 'peer' }] }}
 
-    orthanc_anonymize:          "{{ qorth_queue.orthanc_anonymize }}"
-    orthanc_compress:           "{{ qorth_queue.orthanc_compress }}"
+    orthanc_anonymize:          "{{ qorth_queue__.orthanc_anonymize }}"
+    orthanc_compress:           "{{ qorth_queue__.orthanc_compress }}"

@@ -5,7 +5,7 @@ config_dir: "/config"
 
 qorth_base_name:              "dicom"
 
-qorth_queue:
+qorth_queue_:
   orthanc_docker_image:       "jodogne/orthanc"
   orthanc_docker_tag:         "latest"
   orthanc_pg_backend:         False
@@ -23,7 +23,7 @@ qorth_queue:
   orthanc_anonymize:          False
   orthanc_compress:           False
 
-qorth_destination:
+qorth_destination_:
   orthanc_docker_image:       "jodogne/orthanc-plugins"
   orthanc_docker_tag:         "latest"
   orthanc_pg_backend:         True

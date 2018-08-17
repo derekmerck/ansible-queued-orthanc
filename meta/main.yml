@@ -12,6 +12,6 @@ galaxy_info:
   - docker
   - dicom
 
-dependencies:
-  - role: derekmerck.diana-docker
-    when: (qorth_queue.diana_routing_dir is defined) and (qorth_queue.diana_routing_dir != None)
+dependencies: []
+#  - role: derekmerck.diana-docker
+#    when: (qorth_queue.diana_routing_dir is defined) and (qorth_queue.diana_routing_dir != None)

@@ -22,12 +22,7 @@ Dependencies
 
 ### Local Node
 
-Because this service is composed of multiple roles, it is easiest to organize the configurations in their own namespaces (as sub-keys).  To support this mechanism, Ansible's hash behavior must be set to "merge" in order to retain any default values.
-
-```ini
-[defaults]
-hash_behaviour = merge
-```
+Because this service is composed of multiple roles, it is easiest to organize the configurations in their own namespaces (as sub-keys).  To support this mechanism, passed in var are merged over defaults as the first task.  Pass in overrides as `qorth_queue` and `qorth_destination`.
 
 ### Remote Node
 
