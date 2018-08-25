@@ -1,28 +1,9 @@
 ---
 # tasks file for queued-orthanc
 
-- debug:
-    msg: "{{ qorth_queue_ }}"
-
-- debug:
-    msg: "{{ qorth_destination_ }}"
-
-- debug:
-    msg: "{{ qorth_queue }}"
-
-- debug:
-    msg: "{{ qorth_destination }}"
-
 - set_fact:
     qorth_queue__:       "{{ qorth_queue_       | combine( qorth_queue | default({}) ) }}"
     qorth_destination__: "{{ qorth_destination_ | combine( qorth_destination | default({}) ) }}"
-
-- debug:
-    msg: "{{ qorth_queue__ }}"
-
-- debug:
-    msg: "{{ qorth_destination__ }}"
-
 
 #############################
 # Setup dockerhost
@@ -34,6 +15,7 @@
 
 - set_fact:
     dockerhost_ip:              "{{ dockerhost_response.stdout }}"
+
 
 #############################
 # Create required directories
@@ -53,6 +35,7 @@
 #  become: yes
   when: (qorth_queue__.diana_routing_dir is defined) and qorth_queue__.diana_routing_dir and (qorth_queue.ftpd_incoming_dir is defined) and (qorth_queue.ftpd_incoming_dir != None)
 
+
 #############################
 # Copy routing config if needed
 #############################
@@ -62,7 +45,7 @@
     src: routing.py.j2
     dest: "{{ qorth_queue__.diana_routing_dir }}/{{ qorth_queue__.orthanc_container_name }}.py }}"
   when: (qorth_queue__.diana_routing_dir is defined) and (qorth_queue__.diana_routing_dir != None)
-  notify: restart_orthanc_container
+
 
 #############################
 # Create destination node
