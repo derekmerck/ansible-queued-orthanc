@@ -58,6 +58,7 @@
     orthanc_docker_image:       "{{ qorth_destination__.orthanc_docker_image }}"
     orthanc_docker_tag:         "{{ qorth_destination__.orthanc_docker_tag }}"
     orthanc_pg_backend:         "{{ qorth_destination__.orthanc_pg_backend }}"
+    orthanc_pg_use_data_container: "{{ qorth_destination__.orthanc_pg_use_data_container }}"
     orthanc_container_name:     "{{ qorth_destination__.orthanc_container_name }}"
     orthanc_title:              "{{ qorth_destination__.orthanc_title }}"
     orthanc_user:               "{{ qorth_destination__.orthanc_user }}"
