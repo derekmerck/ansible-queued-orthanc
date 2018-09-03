@@ -2,8 +2,9 @@
 # tasks file for queued-orthanc
 
 - set_fact:
-    qorth_queue__:       "{{ qorth_queue_       | combine( qorth_queue | default({}) ) }}"
-    qorth_destination__: "{{ qorth_destination_ | combine( qorth_destination | default({}) ) }}"
+    qorth_incoming_files__: "{{ qorth_incoming_files_ | combine( qorth_incoming_files | default({}) ) }}"
+    qorth_queue__:          "{{ qorth_queue_          | combine( qorth_queue          | default({}) ) }}"
+    qorth_destination__:    "{{ qorth_destination_    | combine( qorth_destination    | default({}) ) }}"
 
 #############################
 # Setup dockerhost
@@ -23,30 +24,35 @@
 # Create required directories
 #############################
 
-- name: "Create {{ qorth_queue__.diana_routing_dir }} directory for routing"
+- name: "Create services config directory"
   file:
-    path: '{{ qorth_queue__.diana_routing_dir }}'
+    path: '{{ qorth_conf_dir }}/routes'
     state: directory
-#  become: yes
-  when: (qorth_queue__.diana_routing_dir is defined) and (qorth_queue__.diana_routing_dir != None)
 
-- name: "Create {{ qorth_queue.ftpd_incoming_dir }} directory for routing"
+- name: "Create routing config directory"
   file:
-    path: '{{ qorth_queue.ftpd_incoming_dir }}'
+    path: '{{ qorth_conf_dir }}/services'
     state: directory
-#  become: yes
-  when: (qorth_queue__.diana_routing_dir is defined) and qorth_queue__.diana_routing_dir and (qorth_queue.ftpd_incoming_dir is defined) and (qorth_queue.ftpd_incoming_dir != None)
+
+- name: "Create {{ qorth_incoming_files__.ftp_dir }} directory for routing"
+  file:
+    path: '{{ qorth_incoming_files__.pftp_dir }}'
+    state: directory
 
 
 #############################
 # Copy routing config if needed
 #############################
 
-- name: 'Add {{ qorth_queue__.diana_routing_dir }}/{{ qorth_queue__.orthanc_container_name }}.py'
+- name: 'Add services config'
   template:
-    src: routing.py.j2
-    dest: "{{ qorth_queue__.diana_routing_dir }}/{{ qorth_queue__.orthanc_container_name }}.py }}"
-  when: (qorth_queue__.diana_routing_dir is defined) and (qorth_queue__.diana_routing_dir != None)
+    src: services.yml.j2
+    dest: '{{ "{}/services/{}-services.yml".format( qorth_conf_dir, qorth_base_name ) }}'
+
+- name: 'Add routing config'
+  template:
+    src: routes.yml.j2
+    dest: '{{ "{}/routes/{}-routing.yml".format( qorth_conf_dir, qorth_base_name ) }}'
 
 
 #############################

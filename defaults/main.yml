@@ -4,6 +4,10 @@ data_dir: "/data"
 config_dir: "/config"
 
 qorth_base_name:              "dicom"
+qorth_conf_dir:               "{{ config_dir }}/routing"
+
+qorth_incoming_files_:
+  pftp_dir:                   "{{ data_dir }}/pftp/{{ qorth_base_name }}"
 
 qorth_queue_:
   orthanc_docker_image:       "jodogne/orthanc"

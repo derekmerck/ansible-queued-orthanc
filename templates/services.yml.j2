@@ -1,0 +1,23 @@
+{{qorth_base_name}}-file:
+  location: '{{qorth_incoming_files__.pftp_dir}}'
+
+{{qorth_base_name}}-queue:
+  host: '{{ dockerhost_ip }}'
+  port: '{{ qorth_queue__.orthanc_ports.api }}'
+  user: '{{ qorth_queue__.orthanc_user }}'
+  password: '{{ qorth_queue__.orthanc_password }}'
+
+{{qorth_base_name}}-archive:
+  host: '{{ dockerhost_ip }}'
+  port: '{{ qorth_destination__.orthanc_ports.api }}'
+  user: '{{ qorth_destination__.orthanc_user}}'
+  password: '{{ qorth_destination__.orthanc_password }}'
+
+index:
+  host: '{{ indexer_host }}'
+  hec_protocol: '{{ indexer_protocol }}'
+  default_index: dicom
+  default_token: dicom
+  hec_tokens:
+    dicom: '{{ indexer_dicom_tok }}'
+

@@ -1,0 +1,12 @@
+- name: upload_file
+  src:  {{qorth_base_name}}-file
+  dest: {{qorth_base_name}}-queue
+
+- name: anon_and_forward
+  src:  {{qorth_base_name}}-queue
+  dest: {{qorth_base_name}}-archive
+
+- name: index_tags
+  src:  {{qorth_base_name}}-archive
+  dest: index
+
