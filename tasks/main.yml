@@ -36,7 +36,7 @@
 
 - name: "Create {{ qorth_incoming_files__.ftp_dir }} directory for routing"
   file:
-    path: '{{ qorth_incoming_files__.pftp_dir }}'
+    path: '{{ qorth_incoming_files__.ftp_dir }}'
     state: directory
 
 
