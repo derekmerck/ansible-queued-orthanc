@@ -101,12 +101,12 @@
     orthanc_peers:  >
           { 'destination': ['http://{{ dockerhost_ip }}:{{ qorth_destination__.orthanc_ports.api }}',
                             'orthanc',
-                            '{{ qorth_destination__.orthanc_password }}'] }
+                           '{{ qorth_destination__.orthanc_password }}'] }
 
     # TODO: Delete destinations if using a DIANA-Watcher
-    orthanc_destinations: >
-          {{ [{ 'dest': 'destination',
-                'type': 'peer' }] }}
+    # orthanc_destinations: >
+    #      {{ [{ 'dest': 'destination',
+    #            'type': 'peer' }] }}
 
     orthanc_anonymize:          "{{ qorth_queue__.orthanc_anonymize }}"
     orthanc_compress:           "{{ qorth_queue__.orthanc_compress }}"

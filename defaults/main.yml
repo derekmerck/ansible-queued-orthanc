@@ -2,6 +2,7 @@
 # defaults file for queued-orthanc
 data_dir: "/data"
 config_dir: "/config"
+service_password: "passw0rd!"
 
 qorth_base_name:              "dicom"
 qorth_conf_dir:               "{{ config_dir }}/routing"
@@ -11,12 +12,12 @@ qorth_incoming_files_:
 
 qorth_queue_:
   orthanc_docker_image:       "jodogne/orthanc"
-  orthanc_docker_tag:         "latest"
+  orthanc_docker_image_tag:   "latest"
   orthanc_pg_backend:         False
   orthanc_container_name:     "{{ qorth_base_name }}-queue"
   orthanc_title:              "{{ qorth_base_name | capitalize }} Queue"
   orthanc_user:               "orthanc"
-  orthanc_password:           "passw0rd!"
+  orthanc_password:           "{{ service_password }}"
   orthanc_use_data_container: True
   orthanc_volumes:
     data:                     "{{ data_dir }}/{{ qorth_base_name }}-queue"
@@ -29,13 +30,13 @@ qorth_queue_:
 
 qorth_destination_:
   orthanc_docker_image:       "jodogne/orthanc-plugins"
-  orthanc_docker_tag:         "latest"
+  orthanc_docker_image_tag:         "latest"
   orthanc_pg_backend:         True
   orthanc_pg_use_data_container: False
   orthanc_container_name:     "{{ qorth_base_name }}-archive"
   orthanc_title:              "{{ qorth_base_name | capitalize }} Archive"
   orthanc_user:               "orthanc"
-  orthanc_password:           "passw0rd!"
+  orthanc_password:           "{{ service_password }}"
   orthanc_use_data_container: False
   orthanc_volumes:
     data:                     "{{ data_dir }}/{{ qorth_base_name }}-archive"
