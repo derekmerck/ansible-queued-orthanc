@@ -6,6 +6,7 @@ service_password: "passw0rd!"
 
 qorth_base_name:              "dicom"
 qorth_conf_dir:               "{{ config_dir }}/routing"
+qorth_diana_routing:          False
 
 qorth_incoming_files_:
   ftp_dir:                   "{{ data_dir }}/ftp/{{ qorth_base_name }}"
@@ -30,9 +31,10 @@ qorth_queue_:
 
 qorth_destination_:
   orthanc_docker_image:       "jodogne/orthanc-plugins"
-  orthanc_docker_image_tag:         "latest"
+  orthanc_docker_image_tag:   "latest"
   orthanc_pg_backend:         True
   orthanc_pg_use_data_container: False
+  orthanc_pg_database:        "{{ qorth_base_name }}"
   orthanc_container_name:     "{{ qorth_base_name }}-archive"
   orthanc_title:              "{{ qorth_base_name | capitalize }} Archive"
   orthanc_user:               "orthanc"
@@ -45,3 +47,13 @@ qorth_destination_:
     dicom:                    "42002"
     api:                      "42003"
 
+qorth_viewer_:
+  orthanc_docker_image:       "osimis/orthanc"
+  orthanc_docker_image_tag:   "latest"
+  orthanc_container_name:     "{{ qorth_base_name }}-viewer"
+  orthanc_title:              "{{ qorth_base_name | capitalize }} Viewer"
+  orthanc_volumes:
+    config:                   "{{ config_dir }}/{{ qorth_base_name }}-viewer"
+  orthanc_ports:
+    dicom:                    "42004"
+    api:                      "42005"

@@ -6,6 +6,9 @@
     - role: "queued-orthanc"
       qorth_service: "testing1"
 
+      qorth_destination: {}
+      qorth_queue: {}
+
     - role: "queued-orthanc"
       qorth_service: "testing2"
 
@@ -19,4 +22,8 @@
           dicom:       42012
           api:         42013
 
+      qorth_viewer:
+        orthanc_ports:
+          dicom:       42014
+          api:         42015
 
